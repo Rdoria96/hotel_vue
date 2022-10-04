@@ -1,5 +1,5 @@
 <template>
-     <main class="w-auto p-0 m-4">
+    <main class="w-auto p-0 m-4">
         <div class="m-4 p-4">
             <div class="m-auto p-lg-4 bg-light rounded-3">
                 <div class="flex mb-3">
@@ -33,56 +33,61 @@
                                 <div class="row mb-4">
                                     <div class="col">
                                         <div class="form-outline">
-                                            <label class="form-label">NIT</label>
-                                            <input type="text" class="form-control" required />
+                                            <label for="nombre" class="form-label">Nombre</label>
+                                            <input v-model="hotel.name" type="text" class="form-control" id="nombre"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-outline">
-                                            <label class="form-label">NOMBRE</label>
-                                            <input type="text" class="form-control" required />
+                                            <label for="nit" class="form-label">NIT</label>
+                                            <input v-model="hotel.nit" type="text" class="form-control" id="nit"
+                                                required>
+                                            <div v-if="errores.nit" style="color:red" role="alert">{{errores.nit[0]}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col-xl-6">
                                         <div class="form-outline">
-                                            <label class="form-label">DIRECCION</label>
-                                            <input type="text" class="form-control" required />
+                                            <label for="direccion" class="form-label">Dirección</label>
+                                            <input v-model="hotel.address" type="text" class="form-control"
+                                                id="direccion" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-2">
                                         <div class="form-outline ">
-                                            <label class="form-label"># HABITACIONES</label>
-                                            <input type="text" class="form-control " required />
+                                            <label for="nro_habitaciones" class="form-label">Nro de habitaciones</label>
+                                            <input v-model="hotel.num_rooms" type="text" class="form-control"
+                                                id="nro_habitaciones" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col-xl-6">
                                         <div class="form-outline">
-                                            <select class="form-select mt-3" required>
-                                                <option selected disabled value="">CIUDAD</option>
-                                                <option>Monteria</option>
-                                                <option>Medellin</option>
-                                                <option>Bogota</option>
-                                                <option>Santander</option>
-                                                <option>Cartagena</option>
+                                            <label for="ciudad" class="form-label">Ciudad</label>
+                                            <select class="form-select" id="ciudad" v-model="hotel.city_id">
+                                                <option v-for="ciudad in cities" :value="ciudad.id" :key="ciudad.id">{{
+                                                ciudad.name }}</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <a href="#"> <button type="submit"
-                                            class="btn btn-outline-success btn-block mb-4 float-lg-end">Crear
-                                            Hotel</button></a>
+                                    <button type="submit" @click="sendHotel"
+                                        class="btn btn-outline-success btn-block mb-4 float-lg-end">Crear
+                                        Hotel</button>
                                 </div>
                                 <!-- Submit button -->
 
                             </form>
                         </div>
-
+                        <div v-if="info" class="alert alert-primary mt-3" role="alert">
+                            {{info}}
+                        </div>
                     </div>
 
                 </div>
@@ -90,3 +95,54 @@
         </div>
     </main>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+    beforeMount() {
+        axios
+            .get('http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/cities')
+            .then(response => (this.cities = response.data))
+    },
+    data() {
+        return {
+            errores: {
+                nit: null
+            },
+            info: null,
+            cities: [],
+            hotel: {
+                name: null,
+                nit: null,
+                address: null,
+                num_rooms: null,
+                city_id: null
+            }
+        }
+    },
+    methods: {
+        sendHotel() {
+            axios({
+                method: 'post',
+                url: 'http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels',
+                data: this.hotel,
+                responseType: 'json',
+            })
+                .then(response => {
+                    this.info = response.data.message
+
+                    this.hotel.name = null
+                    this.hotel.nit = null
+                    this.hotel.address = null
+                    this.hotel.num_rooms = null
+                    this.hotel.city_id = null
+
+                })
+                .catch(error => {
+                    this.errores = error.response.data.errors
+
+                })
+        }
+    },
+}
+</script>

@@ -1,14 +1,11 @@
 <template>
-  <headervue>
-    <router-view/>
-  </headervue>
-  <encabezadovue/>
-  <tablavue/>
-  </template>
+  <headervue />
+  <encabezadovue />
+  <router-view></router-view>
+</template>
 <script>
 import headervue from './components/headervue.vue'
 import encabezadovue from '@/components/encabezadovue.vue'
-import tablavue from '@/components/tablavue.vue'
 
 
 
@@ -18,8 +15,8 @@ export default {
   components: {
     headervue,
     encabezadovue,
-    tablavue
-}
+
+  }
 }
 </script>
 

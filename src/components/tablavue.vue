@@ -14,16 +14,15 @@
                         <div
                             class="d-inline-block align-text-top m-1 p-1 mx-lg-1 m-lg-3 float-lg-end font-medium text-3xl">
                             <div>
-                                <a href="#"><button type="submit" class="btn btn-success">Crear
-                                        hotel</button></a>
-
+                                <button type="submit" @click="viewFormHotelCreate" class="btn btn-success">Crear
+                                    hotel</button>
                             </div>
                         </div>
                     </div>
                     <div class="container mt-4  p-3 mb-5 bg-body rounded">
                         <table class="table table-hover">
                             <thead>
-                                    <tr>
+                                <tr>
                                     <th>NIT</th>
                                     <th>NOMBRE</th>
                                     <th>DIRECCION</th>
@@ -31,35 +30,48 @@
                                     <th>CAPACIDAD_HAB</th>
                                     <th></th>
                                     <th></th>
-                                    </tr>
+                                </tr>
                             </thead>
-                                    <tbody id="data">
-                                    </tbody>
+                            <tbody>
+                                <tr v-for="hotel in hotels" :key="hotel.id">
+                                    <td> {{hotel.nit}} </td>
+                                    <td> {{hotel.name}} </td>
+                                    <td> {{hotel.address}} </td>
+                                    <td> {{hotel.city.name}} </td>
+                                    <td> {{hotel.num_rooms}} </td>
+                                    <td><button @click="viewHotel(hotel.id)" class="btn btn-warning btn-sm">Detalle
+                                        </button></td>
+                                    <td><button class="btn btn-success btn-sm">Habitaciones </button></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
-    <router-view></router-view>
 </template>
 
 <script>
-    let url = 'https://jsonplaceholder.typicode.com/users/';
-        fetch(url)
-        .then( response => response.json() )
-        .then( data => mostrarData(data) )
-        .catch( error => console.log(error) )
-
-    const mostrarData = (data) => {
-        console.log(data)
-        let body = ""
-        for (var i = 0; i < data.length; i++) {      
-        body+=`<tr><td>${data[i].name}</td><td>${data[i].NOMBRE}</td><td>${data[i].DIRECCION}</td><td>${data[i].CIUDAD}</td></td><td>${data[i].CAPACIDAD_HAB}</td><td> <a href="#"><button type="submit" class="btn btn-outline-primary">Detalles</button></a>
-            <td> <a href=""><button type="submit" class="btn btn-outline-danger">Habitaciones</button></a></tr>`
+import axios from 'axios'
+export default {
+    beforeMount() {
+        axios
+            .get('http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels')
+            .then(response => (this.hotels = response.data.data))
+    },
+    data() {
+        return {
+            hotels: []
         }
-        document.getElementById('data').innerHTML = body
-          //console.log(body)
-    }
+    },
+    methods: {
+        viewFormHotelCreate() {
+            this.$router.push({ name: 'formulariovue' })
+        },
+        viewHotel(id) {
+            alert(id)
+        }
+    },
+}
 </script>
