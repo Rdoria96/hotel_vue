@@ -6,13 +6,13 @@
             </a>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <router-link class="nav-link active text-primary" to="/" >Inicio</router-link>
-                    <router-link class="nav-link  text-secondary" to="/" >Hoteles</router-link>
-                    <router-link class="nav-link text-success" to="/" >Tipo de habitaciones</router-link>
-                    <router-link class="nav-link text-warning" to="/" >Acomodaciones</router-link>
+                    <router-link class="nav-link active text-primary" to="/">Inicio</router-link>
+                    <router-link class="nav-link  text-secondary" to="/from">Hoteles</router-link>
+                    <router-link class="nav-link text-success" to="/">Tipo de habitaciones</router-link>
+                    <router-link class="nav-link text-warning" to="/">Acomodaciones</router-link>
                 </div>
             </div>
         </div>
     </nav>
- 
+
 </template>
