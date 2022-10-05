@@ -75,7 +75,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div>
                                     <button type="submit" @click="sendHotel"
                                         class="btn btn-outline-success btn-block mb-4 float-lg-end">Crear

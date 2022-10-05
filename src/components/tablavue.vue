@@ -39,8 +39,10 @@
                                     <td> {{hotel.address}} </td>
                                     <td> {{hotel.city.name}} </td>
                                     <td> {{hotel.num_rooms}} </td>
-                                    <td><button @click="viewHotel(hotel.id)" class="btn btn-warning btn-sm">Detalle
-                                        </button></td>
+                                    <td>
+                                        <button @click="edit(hotel.id)" class="btn btn-warning btn-sm">Detalle
+                                        </button>
+                                    </td>
                                     <td><button class="btn btn-success btn-sm">Habitaciones </button></td>
                                 </tr>
                             </tbody>
@@ -50,6 +52,7 @@
             </div>
         </div>
     </main>
+    <!-- <details :id="hotel.id"></details> -->
 </template>
 
 <script>
@@ -63,14 +66,15 @@ export default {
     data() {
         return {
             hotels: []
+            // id: hotels.id
         }
     },
     methods: {
         viewFormHotelCreate() {
             this.$router.push({ name: 'formulariovue' })
         },
-        viewHotel(id) {
-            alert(id)
+        edit(id) {
+            window.location.href = "/detail/" + id;
         }
     },
 }

@@ -5,7 +5,7 @@ import tablavue from '@/components/tablavue.vue'
 
 const routes = [
     { path: "/from", name: "formulariovue", component: formulariovue },
-    { path: "/detail", name: "detallesvue", component: detallesvue },
+    { path: "/detail/:id", name: "detallesvue", component: detallesvue },
     { path: "/tabla", name: "tablavue", component: tablavue },
 
 ]
