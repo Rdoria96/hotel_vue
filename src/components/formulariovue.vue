@@ -3,16 +3,16 @@
         <div class="m-4 p-4">
             <div class="m-auto p-lg-4 bg-light rounded-3">
                 <div class="flex mb-3">
-                    <a class="navbar-brand " href="index.html">
+                    <router-link class="navbar-brand " to="/">
                         <img src="../image/icons8-home-24.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Inicio
-                    </a>
-                    <a class="navbar-brand " href="tabla.html">
+                    </router-link>
+                    <router-link class="navbar-brand " to="/tabla">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hoteles
-                    </a>
+                    </router-link>
                     <a class="navbar-brand text-primary">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="submit" @click="sendHotel"
+                                    <button type="button" @click="sendHotel"
                                         class="btn btn-outline-success btn-block mb-4 float-lg-end">Crear
                                         Hotel</button>
                                 </div>

@@ -3,16 +3,16 @@
         <div class="m-4 p-4">
             <div class="m-auto p-lg-4 bg-light rounded-3">
                 <div class="flex mb-3">
-                    <a class="navbar-brand " href="index.html">
+                    <router-link class="navbar-brand " to="/">
                         <img src="../image/icons8-home-24.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Inicio
-                    </a>
-                    <a class="navbar-brand " href="tabla.html">
+                    </router-link>
+                    <router-link class="navbar-brand " to="/tabla">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hoteles
-                    </a>
+                    </router-link>
                     <a class="navbar-brand text-primary">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
@@ -76,16 +76,15 @@
                                     </div>
 
                                 </div>
-                                <div class="alert alert-danger" role="alert" id="message">
+                                <div id="message"> </div>
 
-                                </div>
                                 <div>
                                     <button type="button" @click="eliminar()"
                                         class="btn btn-lg mb-4 float-lg-start">Eliminar
                                         Hotel</button>
                                 </div>
                                 <div>
-                                    <button type="button" @click="actualizar()"
+                                    <button type="button" @click="update()"
                                         class="btn btn-outline-danger btn-block mb-4 float-lg-end">Actualizar
                                         Datos</button>
                                 </div>
@@ -154,15 +153,11 @@ export default {
                 })
                     .then(response => {
                         this.info = response.data.message
-                        document.getElementById("message").innerText = this.info;
-                        this.ocultar = 'hidden'
-
+                        this.Alerta(this.info, 'alert-success')
                     })
                     .catch(error => {
                         this.errores = error.response.data.message
-
-                        document.getElementById("message").innerText = this.errores;
-
+                        this.Alerta(this.errores, 'alert-danger')
                     })
 
             } else {
@@ -170,7 +165,36 @@ export default {
             }
 
 
-        }
+        },
+
+        async update() {
+            // this.errors = Objects
+            this.error = false
+            this.info = false
+            axios({
+                method: 'put',
+                url: 'http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels/' + this.$route.params.id,
+                data: this.hotel,
+                responseType: 'json',
+            })
+                .then(response => {
+
+                    this.info = response.data.message
+                    this.Alerta(this.info, 'alert-success')
+
+                })
+                .catch(error => {
+                    this.errores = error.response.data.errors
+                    this.Alerta(this.errores, 'alert-danger')
+
+                })
+
+        },
+
+        Alerta(msj, type) {
+            document.getElementById("message").innerHTML = '<div class="alert ' + type + '" role="alert">' +
+                msj + '</div>';
+        },
     }
 }
 </script>
