@@ -6,8 +6,6 @@
                     <router-link class="navbar-brand " to="/"> <img src="../image/icons8-home-24.png" alt="" width="24"
                             height="24" class="d-inline-block align-text-top p-1">
                         Inicio</router-link>
-
-
                     <router-link class="navbar-brand " to="/tabla">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
@@ -32,7 +30,7 @@
                         <div
                             class="d-inline-block align-text-top m-1 p-1 mx-lg-1 m-lg-3 float-lg-end font-medium text-3xl">
                             <div>
-                                <button @click="crear()" class="btn bg-primary ">Crear
+                                <button @click="crear(this.hotels.id)" class="btn bg-primary ">Crear
                                     habitaci&oacute;n</button>
                             </div>
                         </div>
@@ -53,10 +51,11 @@
                                 <td> {{hotel.type.name}} </td>
                                 <td> {{hotel.accommodation.name}} </td>
                                 <td> {{hotel.quantity}} </td>
-                                <td> <button type="submit" @click="editar" class="btn btn-warning">Editar</button>
+                                <td> <button type="submit" @click="editar(hotel.id)"
+                                        class="btn btn-warning">Editar</button>
                                 </td>
-                                <td> <button type="submit" @click="eliminar(hotel.num_rooms
-                                )" class="btn btn-danger">Eliminar</button>
+                                <td> <button type="submit" @click="eliminar(hotel.id)"
+                                        class="btn btn-danger">Eliminar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -90,17 +89,11 @@ export default {
         }
     },
     methods: {
-        crear() {
-            this.$router.push({
-                name: 'crearhabitaciones',
-                id: this.$route.params.id
-            })
+        crear(hotelId) {
+            this.$router.push({ name: 'crearhabitaciones', params: hotelId })
         },
-        editar() {
-            this.$router.push({
-                name: 'editarhabitacion',
-                id: this.$route.params.id
-            })
+        editar(id) {
+            this.$router.push({ name: 'editarhabitacion', params: { id } })
         },
         async eliminar(id) {
             console.log(id);
@@ -111,17 +104,8 @@ export default {
                     url: 'http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/rooms/' + id,
                     responseType: 'json',
                 })
-                    .then(response => {
-                        this.info = response.data.message
-                        this.Alerta(this.info, 'alert-success')
-                    })
-                    .catch(error => {
-                        this.errores = error.response.data.message
-                        this.Alerta(this.errores, 'alert-danger')
-                    })
-
-            } else {
-                mensaje = "Has clickado Cancelar";
+                    .then(response => this.Alerta(response.statusText, 'alert-success'))
+                    .catch(error => this.Alerta(error.response, 'alert-danger'))
             }
         },
 

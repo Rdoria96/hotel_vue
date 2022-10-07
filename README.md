@@ -1,4 +1,9 @@
-# practica
+# Hotel Consumo de Api
+
+# Integrantes
+Richard David Doria Montalvo
+Andres Felipe Polo
+Alejandro Chaker Burgos
 
 ## Project setup
 ```

@@ -13,7 +13,7 @@
                             class="d-inline-block align-text-top p-1">
                         Hoteles
                     </router-link>
-                    <router-link class="navbar-brand " to="/crear">
+                    <router-link class="navbar-brand " to="">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hotel

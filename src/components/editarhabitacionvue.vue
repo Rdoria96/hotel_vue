@@ -3,21 +3,21 @@
         <div class="m-4 p-4">
             <div class="m-auto p-lg-4 bg-light rounded-3">
                 <div class="flex mb-3">
-                    <a class="navbar-brand " href="index.html">
+                    <router-link class="navbar-brand " to="/">
                         <img src="../image/icons8-home-24.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Inicio
-                    </a>
-                    <a class="navbar-brand " href="tabla.html">
+                    </router-link>
+                    <router-link class="navbar-brand " to="/tabla">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hoteles
-                    </a>
-                    <a class="navbar-brand " href="habitaciones.html">
+                    </router-link>
+                    <router-link class="navbar-brand " to="">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hotel
-                    </a>
+                    </router-link>
                     <a class="navbar-brand text-primary">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
@@ -66,11 +66,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="m"> </div>
+                                <div id="me"> </div>
                                 <div>
-                                    <button type="button" @click="crearh"
-                                        class="btn btn-outline-info btn-block mb-4 float-lg-end">Crear
-                                        habitaciones</button>
+                                    <button type="button" @click="update"
+                                        class="btn btn-outline-info btn-block mb-4 float-lg-end">Actualizar
+                                        habitación</button>
                                 </div>
                                 <!-- Submit button -->
 
@@ -134,7 +134,35 @@ export default {
     },
 
     methods: {
+        async update() {
+            // this.errors = Objects
+            this.error = false
+            this.info = false
+            axios({
+                method: 'put',
+                url: 'http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/rooms/' + this.$route.params.id,
+                data: this.hotel,
+                responseType: 'json',
+            })
+                .then(response => {
 
+                    this.info = response.data.message
+                    this.Alerta(this.info, 'alert-success')
+
+                })
+                .catch(error => {
+                    this.errores = error.response.data.message
+                    console.log("Errores" + this.errores)
+                    this.Alerta(this.errores, 'alert-danger')
+
+                })
+
+        },
+
+        Alerta(msj, type) {
+            document.getElementById("me").innerHTML = '<div class="alert ' + type + '" role="alert">' +
+                msj + '</div>';
+        }
     }
 
 }
