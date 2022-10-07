@@ -43,7 +43,10 @@
                                         <button @click="edit(hotel.id)" class="btn btn-warning btn-sm">Detalle
                                         </button>
                                     </td>
-                                    <td><button class="btn btn-success btn-sm">Habitaciones </button></td>
+                                    <td>
+                                        <button @click="habita(hotel.id)" class="btn btn-success btn-sm">Habitaciones
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -75,7 +78,12 @@ export default {
         },
         edit(id) {
             window.location.href = "/detail/" + id;
+        },
+        habita(id) {
+            window.location.href = '/habit/' + id;
         }
     },
+
+
 }
 </script>

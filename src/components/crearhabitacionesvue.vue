@@ -3,25 +3,25 @@
         <div class="m-4 p-4">
             <div class="m-auto p-lg-4 bg-light rounded-3">
                 <div class="flex mb-3">
-                    <a class="navbar-brand " href="index.html">
+                    <router-link class="navbar-brand " to="/">
                         <img src="../image/icons8-home-24.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Inicio
-                    </a>
-                    <a class="navbar-brand " href="tabla.html">
+                    </router-link>
+                    <router-link class="navbar-brand " to="/tabla">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hoteles
-                    </a>
-                    <a class="navbar-brand " href="habitaciones.html">
+                    </router-link>
+                    <router-link class="navbar-brand " to="/crear">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
                         Hotel
-                    </a>
+                    </router-link>
                     <a class="navbar-brand text-primary">
                         <img src="../image/simbolo.png" alt="" width="24" height="24"
                             class="d-inline-block align-text-top p-1">
-                        Nueva habitiaci&oacute;n
+                        Nueva habitiación
                     </a>
                 </div>
                 <div>
@@ -30,32 +30,30 @@
                             <img src="../image/logo.png" alt="" width="70" height="70"
                                 class="d-inline-block align-text-top">
                         </a>
-                        <h3 class="d-inline-block align-text-top m-1 p-1 mx-lg-1 m-lg-3 font-medium text-3xl">
-                            NAME HOTEL
-                        </h3>
+
+                        <div class="d-inline-block align-text-top  mx-lg-1 m-lg-3 font-medium text-3xl">
+                            <div class=" mx-3 font-medium text-3xl h2" id="nameH"></div>
+                            <div class="mx-3" id="numRooms"></div>
+                        </div>
                         <div class="m-5 rounded-3 p-lg-2">
                             <form>
                                 <div class="row mb-4">
                                     <div class="col-xl-6">
                                         <div class="form-outline">
-                                            <label class="form-label">TIPO DE HABITACI&Oacute;N</label>
-                                            <select class="form-select " required>
-                                                <option selected disabled value=""></option>
-                                                <option>JUNIOR</option>
-                                                <option>ESTANDAR</option>
-                                                <option>SUITE</option>
+                                            <label class="form-label">TIPO DE HABITACIÓN</label>
+                                            <select class="form-select" v-model="hotel.room_type_id">
+                                                <option v-for="tipoa in Acomodacion" :value="tipoa.id" :key="tipoa.id">
+                                                    {{
+                                                    tipoa.name }}</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
                                         <div class="form-outline">
-                                            <label class="form-label">ACOMODACI&Oacute;N</label>
-                                            <select class="form-select" required>
-                                                <option selected disabled value=""></option>
-                                                <option>TRIPLE</option>
-                                                <option>DOBLE</option>
-                                                <option>SENCILLA</option>
-                                                <option>CUADRUPLE</option>
+                                            <label class="form-label">ACOMODACIÓN</label>
+                                            <select class="form-select" v-model="hotel.accommodation_id">
+                                                <option v-for="room in romms" :value="room.id" :key="room.id">{{
+                                                room.name }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -64,15 +62,16 @@
                                     <div class="col-xl-2">
                                         <div class="form-outline ">
                                             <label class="form-label">Cantidad</label>
-                                            <input type="text" class="form-control " required />
+                                            <input type="number" class="form-control" v-model="hotel.quantity"
+                                                required />
                                         </div>
                                     </div>
                                 </div>
-
+                                <div id="m"> </div>
                                 <div>
-                                    <a href="#"> <button type="submit"
-                                            class="btn btn-outline-info btn-block mb-4 float-lg-end">Crear
-                                            habitaciones</button></a>
+                                    <button type="button" @click="crearh"
+                                        class="btn btn-outline-info btn-block mb-4 float-lg-end">Crear
+                                        habitaciones</button>
                                 </div>
                                 <!-- Submit button -->
 
@@ -86,3 +85,73 @@
         </div>
     </main>
 </template>
+<script>
+import axios from 'axios'
+export default {
+    beforeMount() {
+        axios
+            .get('http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/room-types')
+            .then(response => (this.Acomodacion = response.data))
+
+        axios
+            .get('http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/accommodation-types')
+            .then(response => (this.romms = response.data))
+
+        axios
+            .get('http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels/' + this.$route.params.id)
+            .then(response => {
+                this.hotels = response.data
+                console.log(this.hotels)
+                document.getElementById("nameH").innerText = this.hotels.data.name;
+                document.getElementById("numRooms").innerText = "Número de habitaciones: " + this.hotels.data.num_rooms;
+            })
+    },
+
+    data() {
+        return {
+            errores: {
+                nit: null
+            },
+            info: null,
+            Acomodacion: [],
+            romms: [],
+
+            hotel: {
+                hotel_id: this.$route.params.id,
+                room_type_id: null,
+                accommodation_id: null,
+                quantity: null
+            },
+
+        }
+
+    },
+    methods: {
+        crearh() {
+            axios({
+                method: 'post',
+                url: 'http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/rooms',
+                data: this.hotel,
+                responseType: 'json',
+            })
+                .then(response => {
+                    this.info = response.data.message
+                    this.Alerta(this.info, 'alert-success')
+                    this.hotel.hotel_id = null
+                    this.hotel.room_type_id = null
+                    this.hotel.accommodation_id = null
+                    this.hotel.quantity = null
+                })
+                .catch(error => {
+                    this.errores = error.response.data.message
+                    this.Alerta(this.errores, 'alert-danger')
+                })
+        },
+        Alerta(msj, type) {
+            document.getElementById("m").innerHTML = '<div class="alert ' + type + '" role="alert">' +
+                msj + '</div>';
+        },
+    }
+
+}
+</script>

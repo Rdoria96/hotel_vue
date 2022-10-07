@@ -127,7 +127,6 @@ export default {
                 this.hotel.address = response.data.data.address;
                 this.hotel.num_rooms = response.data.data.num_rooms;
                 this.hotel.city_id = response.data.data.city.id;
-                console.log(this.hotel);
             })
     },
     beforeMount() {
